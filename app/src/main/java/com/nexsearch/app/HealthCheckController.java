@@ -13,12 +13,4 @@ public class HealthCheckController {
     public String health() {
         return "NexSearch backend is running";
     }
-
-    @GetMapping("/api/test-error")
-    public ApiResponse<String> testError() {
-        throw new AppException(
-                ErrorCode.INVALID_REQUEST,
-                "This is a test error from NexSearch"
-        );
-    }
 }
