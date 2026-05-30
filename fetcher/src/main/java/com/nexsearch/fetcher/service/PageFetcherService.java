@@ -2,6 +2,7 @@ package com.nexsearch.fetcher.service;
 
 import com.nexsearch.common.exception.AppException;
 import com.nexsearch.common.exception.ErrorCode;
+import com.nexsearch.common.util.UrlFilter;
 import com.nexsearch.fetcher.dto.PageFetchResult;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -71,6 +72,23 @@ public class PageFetcherService {
      * finalUrl can be different when the website redirects.
      */
     public PageFetchResult fetch(String url) {
+        /*
+         * Before making the HTTP request, check whether this URL is useful
+         * and safe for our current crawler.
+         *
+         * NexSearch is currently focused on text-based web pages, so we allow
+         * normal article/page URLs and reject unsupported files like images,
+         * videos, archives, JavaScript, CSS, PDFs, etc.
+         *
+         * Example:
+         * https://example.com/article/java  -> allowed
+         * https://example.com/image.png     -> rejected
+         *
+         * If the URL is not crawlable, validateCrawlable throws AppException
+         * with error code UNSUPPORTED_URL. The GlobalExceptionHandler then
+         * converts it into a clean API error response.
+         */
+        UrlFilter.validateCrawlable(url);
         try {
             Connection.Response response = Jsoup.connect(url)
                     /*
