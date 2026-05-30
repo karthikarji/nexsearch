@@ -7,6 +7,8 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR("Internal server error", 500),
     UNSUPPORTED_URL("Unsupported URL type", 400),
     ROBOTS_TXT_DISALLOWED("URL is disallowed by robots.txt", 403),
+    SITEMAP_FETCH_FAILED("Failed to fetch sitemap", 500),
+    SITEMAP_PARSE_FAILED("Failed to parse sitemap", 500),
     PAGE_FETCH_FAILED("Failed to fetch page", 500);
 
     private final String defaultMessage;

@@ -27,6 +27,7 @@
         <module>parser</module>
         <module>document</module>
         <module>robots</module>
+        <module>sitemap</module>
         <module>crawler</module>
     </modules>
 
