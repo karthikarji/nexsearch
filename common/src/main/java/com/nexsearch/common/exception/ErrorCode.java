@@ -5,6 +5,7 @@ public enum ErrorCode {
     INVALID_REQUEST("Invalid request", 400),
     RESOURCE_NOT_FOUND("Resource not found", 404),
     INTERNAL_SERVER_ERROR("Internal server error", 500),
+    UNSUPPORTED_URL("Unsupported URL type", 400),
     PAGE_FETCH_FAILED("Failed to fetch page", 500);
 
     private final String defaultMessage;
