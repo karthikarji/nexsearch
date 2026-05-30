@@ -28,6 +28,7 @@
         <module>document</module>
         <module>robots</module>
         <module>sitemap</module>
+        <module>source</module>
         <module>crawler</module>
     </modules>
 
