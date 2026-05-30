@@ -41,9 +41,16 @@
             <artifactId>parser</artifactId>
             <version>${project.version}</version>
         </dependency>
+        
         <dependency>
             <groupId>com.nexsearch</groupId>
             <artifactId>document</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.nexsearch</groupId>
+            <artifactId>robots</artifactId>
             <version>${project.version}</version>
         </dependency>
 

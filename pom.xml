@@ -26,6 +26,7 @@
         <module>fetcher</module>
         <module>parser</module>
         <module>document</module>
+        <module>robots</module>
         <module>crawler</module>
     </modules>
 

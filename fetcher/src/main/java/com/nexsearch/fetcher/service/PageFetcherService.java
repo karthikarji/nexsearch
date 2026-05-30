@@ -4,6 +4,7 @@ import com.nexsearch.common.exception.AppException;
 import com.nexsearch.common.exception.ErrorCode;
 import com.nexsearch.common.util.UrlFilter;
 import com.nexsearch.fetcher.dto.PageFetchResult;
+import com.nexsearch.robots.service.RobotsTxtService;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,12 @@ import java.io.IOException;
  */
 @Service
 public class PageFetcherService {
+
+    private final RobotsTxtService robotsTxtService;
+
+    public PageFetcherService(RobotsTxtService robotsTxtService) {
+        this.robotsTxtService = robotsTxtService;
+    }
 
     /**
      * User-Agent identifies our crawler/bot to websites.
@@ -89,6 +96,17 @@ public class PageFetcherService {
          * converts it into a clean API error response.
          */
         UrlFilter.validateCrawlable(url);
+
+        /*
+         * Before fetching the page, check robots.txt rules for the website.
+         *
+         * Example:
+         * For https://example.com/article/java
+         * we check https://example.com/robots.txt
+         *
+         * If robots.txt disallows the path, we stop before making the page request.
+         */
+        robotsTxtService.validateAllowed(url);
         try {
             Connection.Response response = Jsoup.connect(url)
                     /*
