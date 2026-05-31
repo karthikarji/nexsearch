@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
+import java.util.List;
 
 /**
  * Handles persistence logic for crawled and parsed documents.
@@ -32,6 +33,9 @@ import java.time.Instant;
  */
 @Service
 public class DocumentService {
+
+    private static final int MAX_HEADINGS_PER_DOCUMENT = 100;
+    private static final int MAX_LINKS_PER_DOCUMENT = 200;
 
     private final DocumentRepository documentRepository;
 
@@ -135,8 +139,19 @@ public class DocumentService {
          * This is useful for re-crawling:
          * If a page changes, old headings/links should not remain attached.
          */
-        entity.replaceHeadings(command.headings());
-        entity.replaceLinks(command.links());
+//        entity.replaceHeadings(command.headings());
+//        entity.replaceLinks(command.links());
+        /*
+         * Wikipedia and other large pages can contain hundreds or thousands of links.
+         *
+         * If we save every extracted link immediately, one import can create a huge
+         * number of insert statements into document.document_links, making the request slow.
+         *
+         * For the MVP, we keep only a reasonable number of headings and links.
+         * Later, link extraction can be moved to a separate async crawl-discovery process.
+         */
+        entity.replaceHeadings(limitValues(command.headings(), MAX_HEADINGS_PER_DOCUMENT));
+        entity.replaceLinks(limitValues(command.links(), MAX_LINKS_PER_DOCUMENT));
 
         /*
          * Because DocumentEntity owns child collections with cascade = ALL,
@@ -219,5 +234,17 @@ public class DocumentService {
                 entity.getVisibleText() == null ? 0 : entity.getVisibleText().length(),
                 entity.getLastCrawledAt()
         );
+    }
+
+    private List<String> limitValues(List<String> values, int maxSize) {
+        if (values == null || values.isEmpty()) {
+            return List.of();
+        }
+
+        return values.stream()
+                .filter(value -> value != null && !value.isBlank())
+                .distinct()
+                .limit(maxSize)
+                .toList();
     }
 }

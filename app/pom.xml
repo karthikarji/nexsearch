@@ -67,6 +67,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.nexsearch</groupId>
+            <artifactId>source-connectors</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
