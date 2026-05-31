@@ -9,6 +9,8 @@ public enum ErrorCode {
     ROBOTS_TXT_DISALLOWED("URL is disallowed by robots.txt", 403),
     SITEMAP_FETCH_FAILED("Failed to fetch sitemap", 500),
     SITEMAP_PARSE_FAILED("Failed to parse sitemap", 500),
+    WIKIPEDIA_FETCH_FAILED("Failed to fetch Wikipedia article", 500),
+    WIKIPEDIA_PARSE_FAILED("Failed to parse Wikipedia API response", 500),
     PAGE_FETCH_FAILED("Failed to fetch page", 500);
 
     private final String defaultMessage;

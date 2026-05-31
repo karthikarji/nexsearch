@@ -29,6 +29,7 @@
         <module>robots</module>
         <module>sitemap</module>
         <module>source</module>
+        <module>source-connectors</module>
         <module>crawler</module>
     </modules>
 
